@@ -1,0 +1,35 @@
+{% extends "base.html" %} {% block content %}
+<div class="row justify-content-center mt-5">
+  <div class="col-md-5">
+    <div class="card p-4 border shadow-sm">
+      <h3 class="fw-bold text-center mb-4"><i class="fa-solid fa-user-plus text-success me-2"></i>Create Account</h3>
+      <div id="signupAlert" class="alert alert-danger d-none py-2 small"></div>
+      <form id="signupForm" class="smart-form">
+        <div class="mb-3">
+          <label class="form-label fw-semibold">Full Name</label>
+          <input type="text" id="signupUser" class="form-control" required placeholder="Enter Your Name" />
+        </div>
+        <div class="mb-3">
+          <label class="form-label fw-semibold">Email address</label>
+          <input type="email" id="signupEmail" class="form-control" required placeholder="Enter Your Email" pattern="^[a-zA-Z0-9._%+-]+@(gmail|yahoo|outlook|hotmail|icloud)\.(com|net|org)$" title="Please enter a valid email " />
+        </div>
+        <div class="mb-3">
+          <label class="form-label fw-semibold">Password</label>
+          <input type="password" id="signupPassword" class="form-control" required placeholder="Enter password" />
+        </div>
+        <button type="submit" class="btn btn-success w-100 btn-lg mb-3 submit-lock-btn">Register</button>
+        <div class="text-center small text-muted">Already have an account? <a href="/login" class="text-decoration-none">Login here</a></div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<div class="toast-container position-fixed top-0 end-0 p-3">
+  <div id="liveToast" class="toast align-items-center text-bg-success border-0" role="alert">
+    <div class="d-flex">
+      <div class="toast-body" id="toastMessage"></div>
+      <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+    </div>
+  </div>
+</div>
+{% endblock %}

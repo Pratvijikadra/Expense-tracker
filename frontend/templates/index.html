@@ -1,0 +1,204 @@
+<!-- <!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Zoho Style Expense Tracker</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@1/css/pico.min.css" />
+    <style>
+      .container {
+        margin-top: 20px;
+      }
+      .grid-custom {
+        display: grid;
+        grid-template-columns: 1fr 2fr;
+        gap: 20px;
+      }
+      .summary-card {
+        background: #f4f6f8;
+        padding: 15px;
+        border-radius: 8px;
+        text-align: center;
+      }
+    </style>
+  </head>
+  <body>
+    <nav class="container">
+      <ul>
+        <li><strong>📊 Expense Tracker</strong></li>
+      </ul>
+    </nav>
+
+    <main class="container">
+      <div class="summary-card">
+        <h3>Total Spent: <span id="totalSpent">₹0.00</span></h3>
+      </div>
+      <hr />
+
+      <div class="grid-custom">
+        <section>
+          <form id="expenseForm">
+            <input type="hidden" id="editExpenseId" value="" />
+
+            <label for="amount">Amount (₹)</label>
+            <input type="number" id="amount" step="0.01" required placeholder="e.g. 500" />
+
+            <label for="category">Category</label>
+            <input type="text" id="category" required placeholder="e.g. Food, Travel" />
+
+            <label for="payment_mode">Payment Mode</label>
+            <select id="payment_mode" required>
+              <option value="UPI">UPI</option>
+              <option value="Cash">Cash</option>
+              <option value="Credit Card">Credit Card</option>
+              <option value="Debit Card">Debit Card</option>
+            </select>
+
+            <label for="expense_date">Date</label>
+            <input type="date" id="expense_date" required />
+
+            <label for="description">Description</label>
+            <input type="text" id="description" placeholder="Optional details" />
+
+            <button type="submit" id="submitBtn">Add Expense</button>
+          </form>
+        </section>
+
+        <section>
+          <h4>Recent Expenses</h4>
+          <figure>
+            <table>
+              <thead>
+                <tr>
+                  <th>Date</th>
+                  <th>Category</th>
+                  <th>Amount</th>
+                  <th>Mode</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody id="expenseTableBody"></tbody>
+            </table>
+          </figure>
+        </section>
+      </div>
+    </main>
+
+    <script src="/static/js/app.js"></script>
+  </body>
+</html> -->
+
+{% extends "base.html" %} {% block content %}
+
+<div class="mb-4 text-start">
+  <h3 class="fw-bold text-dark mb-0">⚡ Welcome back, <span class="text-primary text-capitalize" id="welcomeUsername">User</span>!</h3>
+  <p class="text-muted small mb-0">Ready to crush your financial goals and manage your wealth today? Let's analyze your savings!</p>
+</div>
+<script>
+  document.addEventListener("DOMContentLoaded", () => document.getElementById("nav-dash").classList.add("active"));
+</script>
+<div class="card shadow-sm border-0 bg-light-subtle text-center p-3 m-2" style="max-width: 300px">
+  <div class="card-body">
+    <h5 class="card-title fw-bold"><i class="fa-solid fa-piggy-bank text-primary"></i> Piggy Bank Goals</h5>
+    <p class="card-text text-muted small">Start your savings for the future goals.</p>
+    <a href="/saving-page" class="btn btn-sm btn-success fw-bold w-100"> Go to Savings 🚀 </a>
+  </div>
+</div>
+
+<div class="card p-3 border border-light shadow-sm bg-white mb-4">
+  <div class="d-flex justify-content-between align-items-center mb-2">
+    <div>
+      <span class="fw-bold text-dark"><i class="fa-solid fa-scale-balanced text-primary me-2"></i>Monthly Budget Status</span>
+      <span id="budgetAlertBadge" class="badge ms-2 py-1 px-2 d-none"></span>
+    </div>
+    <div class="text-end">
+      <span class="text-muted small">Spent: <b class="text-dark" id="budgetSpentText">₹0</b> / Budget: <b class="text-dark" id="budgetTotalText">₹0</b></span>
+    </div>
+  </div>
+
+  <div class="progress" style="height: 12px; border-radius: 6px">
+    <div id="budgetProgressBar" class="progress-bar progress-bar-striped progress-bar-animated bg-success" role="progressbar" style="width: 0%"></div>
+  </div>
+
+  <div id="budgetTextMessage" class="small text-muted mt-2 fw-semibold">💡 Pro Tip: Update your profile configuration settings to re-adjust your overall monthly wallet allocations!</div>
+</div>
+
+<div class="card p-4 mb-4 text-center text-white" style="background: linear-gradient(135deg, #1e3a8a, #3b82f6)">
+  <span class="text-white-50 text-uppercase fw-bold small">Your Total Expense</span>
+  <h1 class="display-5 fw-bold m-0" id="totalSpent">₹0.00</h1>
+</div>
+
+<div class="row mb-4">
+  <div class="col-md-4 mb-3 mb-md-0">
+    <div class="card p-3 border text-center bg-white">
+      <span class="text-muted small fw-bold text-uppercase"><i class="fa-solid fa-calendar-day text-primary me-1"></i> Daily Avg</span>
+      <h4 class="fw-bold text-dark m-0 mt-1" id="dailyAvg">₹0.00</h4>
+    </div>
+  </div>
+  <div class="col-md-4 mb-3 mb-md-0">
+    <div class="card p-3 border text-center bg-white">
+      <span class="text-muted small fw-bold text-uppercase"><i class="fa-solid fa-calendar-week text-success me-1"></i> Monthly Avg</span>
+      <h4 class="fw-bold text-dark m-0 mt-1" id="monthlyAvg">₹0.00</h4>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="card p-3 border text-center bg-white">
+      <span class="text-muted small fw-bold text-uppercase"><i class="fa-solid fa-calendar-days text-warning me-1"></i> Yearly Avg</span>
+      <h4 class="fw-bold text-dark m-0 mt-1" id="yearlyAvg">₹0.00</h4>
+    </div>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-body p-0">
+    <div class="table-responsive">
+      <table class="table table-hover align-middle m-0">
+        <thead class="table-light py-3">
+          <tr>
+            <th class="ps-4">No.</th>
+            <th>Date</th>
+            <th>Category</th>
+            <th>Mode</th>
+            <th>Amount</th>
+            <th>Description</th>
+            <th class="text-center pe-4">Actions</th>
+          </tr>
+        </thead>
+        <tbody id="expenseTableBody"></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<div class="toast-container position-fixed top-0 end-0 p-3">
+  <div id="liveToast" class="toast align-items-center text-bg-success border-0" role="alert">
+    <div class="d-flex">
+      <div class="toast-body" id="toastMessage"></div>
+      <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="deleteModal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">
+          <i class="fa-solid fa-trash text-danger me-2"></i>
+          Confirm Delete
+        </h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+
+      <div class="modal-body">Are you sure you want to delete this expense?</div>
+
+      <div class="modal-footer">
+        <button class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+
+        <button class="btn btn-danger" id="confirmDeleteBtn">Delete</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

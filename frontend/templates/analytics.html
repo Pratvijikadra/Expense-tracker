@@ -1,0 +1,209 @@
+{% extends "base.html" %} {% block content %}
+<script>
+  document.addEventListener("DOMContentLoaded", () => document.getElementById("nav-analytics").classList.add("active"));
+</script>
+
+<div id="analyticsContent">
+  <div class="row mb-4">
+    <div class="col-md-6">
+      <div class="card p-3 text-center bg-white border">
+        <span class="text-muted small fw-bold text-uppercase">Previous Month Expenses</span>
+        <h3 class="fw-bold text-secondary m-0" id="prevMonthTotal">₹0.00</h3>
+      </div>
+    </div>
+
+    <div class="col-md-6">
+      <div class="card p-3 bg-white border" id="growthCard">
+        <span class="text-muted small fw-bold text-uppercase d-block text-center">This Month Insights</span>
+        <div class="d-flex justify-content-center align-items-center mt-1">
+          <h3 class="fw-bold text-secondary m-0 me-3" id="thisMonthTotal">₹0.00</h3>
+          <span class="fs-5 fw-semibold" id="growthPercentage">0%</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row m-4">
+    <div class="col-12">
+      <div class="card p-4">
+        <h4 class="fw-bold mb-3">
+          <i class="fa-solid fa-chart-line text-primary me-2"></i>
+          Current Month Category-wise Expenses
+        </h4>
+
+        <canvas id="currentMonthLineChart" class="h-auto"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <div class="row justify-content-center">
+    <div class="col-md-8 text-center">
+      <div class="card p-4">
+        <h4 class="fw-bold text-start mb-4"><i class="fa-solid fa-chart-pie text-success me-2"></i>Visual Expense Analytics</h4>
+
+        <div class="row mb-4 align-items-center bg-light p-3 rounded mx-1">
+          <div class="col-md-4 text-start">
+            <label class="form-label small fw-bold text-muted mb-1">Filter by Mode</label>
+            <select id="filterPaymentMode" class="form-select form-select-sm" onchange="applyChartFilter()">
+              <option value="ALL">All Payment Modes</option>
+              <option value="UPI">UPI</option>
+              <option value="Cash">Cash</option>
+              <option value="Credit Card">Credit Card</option>
+              <option value="Debit Card">Debit Card</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="d-flex justify-content-center mt-2">
+          <div style="width: 100%; max-width: 400px">
+            <div id="noChartData" class="text-center text-muted fw-bold py-5" style="display: none">
+              <i class="fa-solid fa-circle-info fs-2 d-block mb-2"></i>
+              No data found
+            </div>
+            <canvas id="categoryChart"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row mt-4">
+    <div class="col-12">
+      <div class="card p-4">
+        <h4 class="fw-bold text-start mb-3"><i class="fa-solid fa-chart-line text-primary me-2"></i>Year-over-Year (YoY) Month Comparison</h4>
+
+        <div class="row mb-3 bg-light p-3 rounded mx-1">
+          <div class="col-md-4">
+            <label class="form-label small fw-bold text-muted mb-1">Select Base Year</label>
+            <select id="compareBaseYear" class="form-select form-select-sm" onchange="updateLineChart()"></select>
+          </div>
+          <div class="col-md-4">
+            <label class="form-label small fw-bold text-muted mb-1">Compare With Year</label>
+            <select id="compareTargetYear" class="form-select form-select-sm" onchange="updateLineChart()"></select>
+          </div>
+          <div class="col-md-4">
+            <label class="form-label small fw-bold text-muted mb-1">Select Month</label>
+            <select id="compareMonth" class="form-select form-select-sm" onchange="updateLineChart()">
+              <option value="01">January</option>
+              <option value="02">February</option>
+              <option value="03">March</option>
+              <option value="04">April</option>
+              <option value="05" selected>May</option>
+              <option value="06">June</option>
+              <option value="07">July</option>
+              <option value="08">August</option>
+              <option value="09">September</option>
+              <option value="10">October</option>
+              <option value="11">November</option>
+              <option value="12">December</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="alert alert-info py-2 small text-start" id="comparisonInsightText">Loading comparison insights...</div>
+
+        <div class="mt-3">
+          <canvas id="yoyLineChart" style="width: 100%; max-height: 300px"></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="noExpensesPlaceholder" class="container mt-5 d-none text-center py-5">
+  <div class="card shadow-sm p-5 border-0 bg-light">
+    <div class="card-body">
+      <div class="mb-4">
+        <i class="fa-solid fa-chart-pie text-muted" style="font-size: 4rem"></i>
+      </div>
+      <h3 class="fw-bold text-secondary">No expenses found for the analysis</h3>
+      <p class="text-muted mb-4">Please add expense to see the analytics.</p>
+      <a href="/manage" class="btn btn-primary btn-lg shadow-sm"> <i class="fa-solid fa-plus me-2"></i>Add Expense Now </a>
+    </div>
+  </div>
+</div>
+
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script> -->
+<script>
+  // 1. Page load hote hi live database ka data fetch karne ka function
+  function loadAnalyticsChart() {
+    fetch("/expenses/") // Aapka expenses fetch karne wala API endpoint
+      .then((res) => res.json())
+      .then((data) => {
+        if (!data || data.length === 0) {
+          console.log("No expense data found for analytics.");
+          return;
+        }
+
+        // 2. Dynamic Object banana categories ke liye
+        // Example output: { "Food": 250, "Rent": 5000, "UPI": 120 }
+        const categoryTotals = {};
+
+        data.forEach((expense) => {
+          const category = expense.category || "Other";
+          const amount = parseFloat(expense.amount) || 0;
+
+          if (categoryTotals[category]) {
+            categoryTotals[category] += amount; // Agar category pehle se hai toh plus karo
+          } else {
+            categoryTotals[category] = amount; // Pehli baar category milne par set karo
+          }
+        });
+
+        // 3. Chart ke liye X-axis (Labels) aur Y-axis (Data) dynamic nikalna
+        const xCategories = Object.keys(categoryTotals); // e.g., ["Food", "Rent"]
+        const yAmounts = Object.values(categoryTotals); // e.g., [250, 5000]
+
+        // 4. Vibrant random colors generate karna har category ke liye
+        const backgroundColors = xCategories.map((_, index) => {
+          const colors = [
+            "rgba(255, 99, 132, 0.8)", // Pink
+            "rgba(54, 162, 235, 0.8)", // Blue
+            "rgba(255, 206, 86, 0.8)", // Yellow
+            "rgba(75, 192, 192, 0.8)", // Green
+            "rgba(153, 102, 255, 0.8)", // Purple
+            "rgba(255, 159, 64, 0.8)", // Orange
+          ];
+          return colors[index % colors.length];
+        });
+
+        // 5. Fresh Live Chart Initializer (Humne type "bar" rakha hai jo category ke liye sabse best hota hai)
+        new Chart("myChart", {
+          type: "bar", // Aap "pie", "doughnut" ya "line" bhi likh sakti hain
+          data: {
+            labels: xCategories, // X-axis par categories ke naam aayenge
+            datasets: [
+              {
+                label: "Total Spent (₹)",
+                backgroundColor: backgroundColors,
+                borderColor: "rgba(0,0,0,0.1)",
+                borderWidth: 1,
+                data: yAmounts, // Y-axis par unka total kharcha aayega
+              },
+            ],
+          },
+          options: {
+            legend: { display: true, position: "top" },
+            scales: {
+              yAxes: [
+                {
+                  ticks: {
+                    beginAtZero: true, // Chart hamesha 0 se start hoga jo clear metrics dega
+                  },
+                },
+              ],
+            },
+            title: {
+              display: true,
+              text: "Current Distribution Breakdown",
+            },
+          },
+        });
+      })
+      .catch((err) => console.error("Error loading live analytics:", err));
+  }
+
+  // Automatically execute the engine when screen mounts
+  document.addEventListener("DOMContentLoaded", loadAnalyticsChart);
+</script>
+{% endblock %}

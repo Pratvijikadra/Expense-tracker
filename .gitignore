@@ -1,0 +1,54 @@
+# ====================================================================
+# 🔥 EXPENSE TRACKER - PRODUCTION REPOSITORY IGNORE CONFIGURATIONS
+# ====================================================================
+
+# 1. SECURITY & ENVIRONMENT VARIABLES (Important)
+# --------------------------------------------------------------------
+
+.env
+.env.*
+*.env
+config.json
+
+# 2. PYTHON RUNTIME & CACHE FILES
+# --------------------------------------------------------------------
+# Python jab code chalata hai toh ye files khud bana leta hai, inki zarurat git ko nahi hai
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# 3. VIRTUAL ENVIRONMENTS (Dependecies)
+# --------------------------------------------------------------------
+# Inme hazaro external libraries hoti hain (jaise fastapi, pymongo). 
+# Hame inki jagah sirf requirements.txt ko push karna hota hai.
+env/
+venv/
+.venv/
+expensevenv
+ENV/
+bin/
+lib/
+include/
+
+# 4. OPERATING SYSTEM & IDE SPECIFIC CACHE
+# --------------------------------------------------------------------
+# VS Code ya Mac/Windows ke internal settings folders
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.swp
+.DS_Store
+Thumbs.db
+
+# 5. LOCAL LOGS & TEMPORARY FILES
+# --------------------------------------------------------------------
+# Runtime errors ya crash dumps ki logs
+*.log
+logs/
+.webassets-cache

@@ -1,0 +1,70 @@
+{% extends "base.html" %} {% block content %}
+<script>
+  document.addEventListener("DOMContentLoaded", () => document.getElementById("nav-manage").classList.add("active"));
+</script>
+
+<div class="row justify-content-center">
+  <div class="col-md-6">
+    <div class="card p-4">
+      <h4 class="fw-bold mb-4" id="formHeader"><i class="fa-solid fa-wallet text-primary me-2"></i>Add New Expense</h4>
+      <form id="expenseForm" class="smart-form">
+        <input type="hidden" id="editExpenseId" value="" />
+
+        <div class="mb-3">
+          <label class="form-label fw-semibold">Amount (₹)</label>
+          <input type="number" id="amount" step="0.01" class="form-control form-control-lg" min="1" placeholder="0.00" required />
+        </div>
+        <div class="mb-3">
+          <label class="form-label fw-semibold">Category</label>
+          <select id="category" class="form-select" required>
+            <option value="" disabled selected hidden>Choose Category</option>
+            <option value="Food">Food & Dining</option>
+            <option value="Rent">Rent & Accommodation</option>
+            <option value="Shopping">Shopping</option>
+            <option value="Travel">Travel & Fuel</option>
+            <option value="Bills">Bills & Utilities</option>
+            <option value="Entertainment">Entertainment (Movies/OTT)</option>
+            <option value="Medical">Medical & Health</option>
+            <option value="Others">Others</option>
+          </select>
+        </div>
+        <div class="mb-3">
+          <label class="form-label fw-semibold">Payment Mode</label>
+          <select id="payment_mode" class="form-select" required>
+            <option value="" disabled selected hidden>Select Payment Mode</option>
+            <option value="UPI">UPI</option>
+            <option value="Cash">Cash</option>
+            <option value="Credit Card">Credit Card</option>
+            <option value="Debit Card">Debit Card</option>
+            <option value="Others">Others</option>
+          </select>
+        </div>
+        <div class="mb-3">
+          <label class="form-label fw-semibold">Expense Date</label>
+          <input type="date" id="expense_date" class="form-control" required />
+        </div>
+        <div class="mb-3">
+          <label class="form-label fw-semibold">Description</label>
+          <textarea id="description" class="form-control" rows="2" placeholder="Write context..."></textarea>
+        </div>
+
+        <div class="mb-4 p-2 border rounded bg-light">
+          <div class="form-check form-switch m-0 d-flex align-items-center">
+            <input class="form-check-input me-2" type="checkbox" id="is_recurring" />
+            <label class="form-check-label fw-semibold text-dark" for="is_recurring"> 🔁 Mark as Monthly Recurring Expense? (Auto-adds every month) </label>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-6">
+            <button type="submit" id="submitBtn" class="btn btn-primary btn-lg w-100 submit-lock-btn">Add Expense</button>
+          </div>
+          <div class="col-6">
+            <a href="/" class="btn btn-danger w-100 btn-close-white btn-lg" id="cancelBtn" type="button">Cancel</a>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

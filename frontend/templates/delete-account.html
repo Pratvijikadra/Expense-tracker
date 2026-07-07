@@ -1,0 +1,96 @@
+{% extends "base.html" %} {% block content %}
+<div class="container d-flex justify-content-center align-items-center min-vh-100">
+  <div class="card shadow-sm border-0 p-4" style="max-width: 450px; width: 100%; border-radius: 12px">
+    <!-- Header -->
+    <div class="text-center mb-4">
+      <div class="bg-danger-subtle text-danger rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px">
+        <i class="fa-solid fa-user-xmark fs-3"></i>
+      </div>
+      <h4 class="fw-bold text-dark mb-1">Delete Your Account</h4>
+      <p class="text-muted small">This action is permanent and cannot be undone.</p>
+    </div>
+
+    <!-- Warning Box -->
+    <div class="alert alert-warning border-0 small mb-4" style="background-color: #fff9db; color: #856404">
+      <i class="fa-solid fa-triangle-exclamation me-2"></i>
+      <strong>Warning:</strong> deleting your account will permanently erase your profile, savings goals, transaction history, and all logged expenses.
+    </div>
+
+    <!-- Form -->
+    <form id="deleteAccountForm" class="smart-form">
+      <div class="mb-4">
+        <label for="confirmPassword" class="form-label text-secondary small fw-bold">Enter Password to Confirm</label>
+        <div class="input-group">
+          <input type="password" id="confirmPassword" class="form-control border-start-0 ps-0" placeholder="Your account password" required />
+        </div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="d-grid gap-2">
+        <button type="submit" id="btnSubmitDelete" class="btn btn-danger py-2 fw-semibold submit-lock-btn"><i class="fa-solid fa-trash-can me-1"></i> Permanently Delete Account</button>
+        <a href="/" class="btn btn-light py-2 text-secondary fw-semibold border"> <i class="fa-solid fa-arrow-left me-1"></i> Cancel & Go Back </a>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Script For API Call -->
+<script>
+  document.getElementById("deleteAccountForm").addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const passwordInput = document.getElementById("confirmPassword");
+    const submitBtn = document.getElementById("btnSubmitDelete");
+    const enteredPassword = passwordInput.value.trim();
+
+    // Double click and repeat request blocking
+    submitBtn.disabled = true;
+    submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status"></span> Processing Deletion...';
+
+    try {
+      // Hamari vahi API ko call karenge (Cookie based)
+      const response = await fetch("/auth/api/account/delete", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ password: enteredPassword }),
+      });
+
+      const result = await response.json();
+
+      if (response.ok) {
+        // Success Toast / Alert
+        if (typeof showToast === "function") {
+          showToast("🎉 Account deleted successfully!", "success");
+        } else {
+          alert("🎉 Account deleted successfully!");
+        }
+
+        // Clean storage state
+        localStorage.clear();
+
+        // Redirect to login page
+        setTimeout(() => {
+          window.location.href = "/login";
+        }, 1500);
+      } else {
+        throw new Error(result.detail || "Incorrect password! Please try again.");
+      }
+    } catch (error) {
+      if (typeof showToast === "function") {
+        showToast(`❌ ${error.message}`, "danger");
+      } else {
+        alert(`❌ ${error.message}`);
+      }
+
+      // Reset button if fails
+      submitBtn.disabled = false;
+      submitBtn.innerHTML = '<i class="fa-solid fa-trash-can me-1"></i> Permanently Delete Account';
+      passwordInput.value = "";
+      passwordInput.focus();
+    }
+  });
+</script>
+
+{% endblock %}
