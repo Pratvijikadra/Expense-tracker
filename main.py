@@ -19,7 +19,7 @@ app = FastAPI()
 # app.add_middleware(
 #     CORSMiddleware,
 #     allow_origins=["http://127.0.0.1:8000",
-#         "http://localhost:8000"],  # Sabhi origins ko allow karne ke liye
+#         "http://localhost:8000"], 
 #     allow_credentials=True,
 #     allow_methods=["*"],
 #     allow_headers=["*"],
@@ -93,7 +93,7 @@ def check_and_generate_recurring_expenses():
     today = datetime.today()
     current_year_month = today.strftime("%Y-%m") # Expected format: "2026-06"
     
-    # 1. Pure database se saare valid active recurring metrics nikalna
+    # 1. Pure database se  valid active recurring metrics 
     recurring_templates = list(expense_collection.find({"is_recurring": True}))
     
     for template in recurring_templates:
@@ -105,7 +105,7 @@ def check_and_generate_recurring_expenses():
         target_day = orig_date_str.split("-")[2] # Get date day: "15"
         expected_new_date = f"{current_year_month}-{target_day}" # New date target: "2026-06-15"
         
-        # 2. Check kijiye kya is mahine is expense ka copy generate ho chuka hai ya nahi?
+        # 2. Check kya is is expense ka copy generate ho hai ya 
         already_exists = expense_collection.find_one({
             "user_id": template["user_id"],
             "amount": template["amount"],
@@ -114,7 +114,7 @@ def check_and_generate_recurring_expenses():
             "expense_date": expected_new_date
         })
         
-        # 3. Agar entry exist nahi karti aur current date use cross kar chuki hai, insert clone copy!
+        # 3. Agar entry exist  aur current date use cross kar  hai, insert clone copy!
         if not already_exists:
             # Create fresh duplicate context data mapping
             cloned_expense = {
