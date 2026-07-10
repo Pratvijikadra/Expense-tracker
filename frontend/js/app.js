@@ -315,7 +315,7 @@ function loadDashboardData() {
           if (alertBadgeEl) {
             alertBadgeEl.className = "badge bg-secondary ms-2 py-1 px-2";
             alertBadgeEl.innerText = "⚠️ Not Set";
-            alertBadgeEl.classList.remove("d-none");
+            alertBadgeEl?.classList.remove("d-none");
           }
           if (messageTextEl) messageTextEl.innerHTML = "ℹ️ Your monthly budget is 0. Click <b>Update Profile</b> to set your budget!";
         } else if (percentageLeft <= 0) {
@@ -323,7 +323,7 @@ function loadDashboardData() {
           if (alertBadgeEl) {
             alertBadgeEl.className = "badge text-dark ms-2 py-1 px-2";
             alertBadgeEl.innerText = "❌ Budget Overspent!";
-            alertBadgeEl.classList.remove("d-none");
+            alertBadgeEl?.classList.remove("d-none");
           }
           if (messageTextEl) messageTextEl.innerHTML = "⚠️ <b>Critical Warning:</b> You have exceeded your monthly budget! Stop extra spending immediately.";
         } else if (percentageUsed >= 90) {
@@ -331,7 +331,7 @@ function loadDashboardData() {
           if (alertBadgeEl) {
             alertBadgeEl.className = "badge text-dark ms-2 py-1 px-2";
             alertBadgeEl.innerText = "🚨 Budget is Low!";
-            alertBadgeEl.classList.remove("d-none");
+            alertBadgeEl?.classList.remove("d-none");
           }
           if (messageTextEl) messageTextEl.innerHTML = `🚨 <b>Your budget is extremely low!</b> Only <b>${percentageLeft.toFixed(1)}%</b> remains for this month!`;
         } else if (percentageUsed >= 70 && percentageUsed < 90) {
@@ -339,7 +339,7 @@ function loadDashboardData() {
           if (alertBadgeEl) {
             alertBadgeEl.className = "badge  text-dark ms-2 py-1 px-2";
             alertBadgeEl.innerText = "⚠️ Warning!";
-            alertBadgeEl.classList.remove("d-none");
+            alertBadgeEl?.classList.remove("d-none");
           }
           if (messageTextEl) messageTextEl.innerHTML = `⚠️ <b>Warning:</b> You have used <b>${percentageUsed.toFixed(1)}%</b> of your budget!`;
         } else {
@@ -347,7 +347,7 @@ function loadDashboardData() {
           if (alertBadgeEl) {
             alertBadgeEl.className = "badge text-dark ms-2 py-1 px-2";
             alertBadgeEl.innerText = "✅ Stable";
-            alertBadgeEl.classList.remove("d-none");
+            alertBadgeEl?.classList.remove("d-none");
           }
 
           // auto transferd to piggy bank
@@ -357,7 +357,7 @@ function loadDashboardData() {
       } else if (budgetTotalTextEl) {
         budgetTotalTextEl.innerText = "Not Configured";
         progressBarEl.style.width = "0%";
-        if (alertBadgeEl) alertBadgeEl.classList.add("d-none");
+        if (alertBadgeEl) alertBadgeEl?.classList.add("d-none");
       }
 
       fetch("/savings/auto-transfer", {
@@ -525,10 +525,10 @@ function loadAnalyticsData() {
       // CRITICAL CONDITION CHECK: if array is empty or no data exists
       if (!data || data.length === 0) {
         // 1.hide Dashboard content
-        if (contentEl) contentEl.classList.add("d-none");
+        if (contentEl) contentEl?.classList.add("d-none");
 
         // 2. 'No expenses found'
-        if (placeholderEl) placeholderEl.classList.remove("d-none");
+        if (placeholderEl) placeholderEl?.classList.remove("d-none");
 
         return; // stop chart rendering
       }
@@ -536,8 +536,8 @@ function loadAnalyticsData() {
       // -------------------------------------------------------------
       // 🟢 if expense availabe
       // -------------------------------------------------------------
-      if (contentEl) contentEl.classList.remove("d-none");
-      if (placeholderEl) placeholderEl.classList.add("d-none");
+      if (contentEl) contentEl?.classList.remove("d-none");
+      if (placeholderEl) placeholderEl?.classList.add("d-none");
 
       allRawExpenses = data;
 
@@ -877,7 +877,7 @@ if (loginForm) {
       } else {
         const alertEl = document.getElementById("loginAlert");
         alertEl.innerText = data.detail || "Invalid credentials.";
-        alertEl.classList.remove("d-none");
+        alertEl?.classList.remove("d-none");
       }
     });
   });
@@ -913,8 +913,8 @@ function showProfileModal() {
   }
 
   // Clear old errors
-  document.getElementById("profileAlert").classList.add("d-none");
-  document.getElementById("profileErrorAlert").classList.add("d-none");
+  document.getElementById("profileAlert")?.classList.add("d-none");
+  document.getElementById("profileErrorAlert")?.classList.add("d-none");
   document.getElementById("profilePassword").value = "";
 
   //  1. obtain Current logged in user name for make a key
@@ -947,8 +947,8 @@ if (profileFormSubmitElement) {
     const errorAlert = document.getElementById("profileErrorAlert");
     const submitBtn = document.getElementById("saveProfileBtn");
 
-    errorAlert.classList.add("d-none");
-    successAlert.classList.add("d-none");
+    errorAlert?.classList.add("d-none");
+    successAlert?.classList.add("d-none");
 
     submitBtn.disabled = true;
     submitBtn.innerHTML = `<span class="spinner-border spinner-border-sm me-2"></span>Saving context...`;
@@ -987,7 +987,7 @@ if (profileFormSubmitElement) {
           if (document.getElementById("welcomeUsername")) document.getElementById("welcomeUsername").innerText = usernameVal;
 
           successAlert.innerText = "Settings updated successfully!";
-          successAlert.classList.remove("d-none");
+          successAlert?.classList.remove("d-none");
 
           setTimeout(() => {
             profileModalBootstrapInstance.hide();
@@ -1004,7 +1004,7 @@ if (profileFormSubmitElement) {
       })
       .catch((err) => {
         errorAlert.innerText = err.message;
-        errorAlert.classList.remove("d-none");
+        errorAlert?.classList.remove("d-none");
       })
       .finally(() => {
         submitBtn.disabled = false;
@@ -1040,17 +1040,17 @@ function executeProfileUpdateWorkflow(event) {
   // Basic client validation
   if (usernameVal.length < 3) {
     errorAlert.innerText = "Username must be at least 3 characters long.";
-    errorAlert.classList.remove("d-none");
+    errorAlert?.classList.remove("d-none");
     return;
   }
   if (!emailVal.includes("@")) {
     errorAlert.innerText = "Please enter a valid email address.";
-    errorAlert.classList.remove("d-none");
+    errorAlert?.classList.remove("d-none");
     return;
   }
 
-  errorAlert.classList.add("d-none");
-  successAlert.classList.add("d-none");
+  errorAlert?.classList.add("d-none");
+  successAlert?.classList.add("d-none");
 
   // Loading State
   submitBtn.disabled = true;
@@ -1094,7 +1094,7 @@ function executeProfileUpdateWorkflow(event) {
     })
     .catch((err) => {
       errorAlert.innerText = err.message;
-      errorAlert.classList.remove("d-none");
+      errorAlert?.classList.remove("d-none");
     })
     .finally(() => {
       submitBtn.disabled = false;
@@ -1229,8 +1229,8 @@ function showToast(message, type = "success") {
   const toastEl = document.getElementById("liveToast");
   if (!toastEl) return;
 
-  toastEl.classList.remove("text-bg-success", "text-bg-danger");
-  toastEl.classList.add(type === "success" ? "text-bg-success" : "text-bg-danger");
+  toastEl?.classList.remove("text-bg-success", "text-bg-danger");
+  toastEl?.classList.add(type === "success" ? "text-bg-success" : "text-bg-danger");
 
   const toastMsgEl = document.getElementById("toastMessage");
   if (toastMsgEl) {
@@ -1359,10 +1359,10 @@ function showModalAlert(message, type = "danger") {
     alertEl.innerHTML = message;
     // Bootstrap alert classes
     alertEl.className = `alert alert-${type} py-2 px-3 small mb-3`;
-    alertEl.classList.remove("d-none"); // Alert ko screen par dikhayein
+    alertEl?.classList.remove("d-none"); // Alert ko screen par dikhayein
 
     setTimeout(() => {
-      alertEl.classList.add("d-none");
+      alertEl?.classList.add("d-none");
     }, 4000);
   }
 }
@@ -1374,7 +1374,7 @@ function generateDynamicPDF() {
   const fromDateVal = document.getElementById("pdfFromDate").value;
   const toDateVal = document.getElementById("pdfToDate").value;
 
-  document.getElementById("modalAlert").classList.add("d-none");
+  document.getElementById("modalAlert")?.classList.add("d-none");
 
   if (!fromDateVal || !toDateVal) {
     showModalAlert("⚠️ <b>Validation Error:</b> Please select both Start Date and End Date!", "warning");
@@ -1540,22 +1540,22 @@ function loadGoal() {
 
       // Goal Completed Check
       if (goal.current_amount >= goal.target_amount) {
-        document.getElementById("goalCard").classList.add("border-success");
+        document.getElementById("goalCard")?.classList.add("border-success");
 
-        document.getElementById("goalProgress").classList.remove("bg-primary");
-        document.getElementById("goalProgress").classList.add("bg-success");
+        document.getElementById("goalProgress")?.classList.remove("bg-primary");
+        document.getElementById("goalProgress")?.classList.add("bg-success");
 
-        document.getElementById("goalCompletedBox").classList.remove("d-none");
+        document.getElementById("goalCompletedBox")?.classList.remove("d-none");
 
         // New goal form show
         // document.getElementById("goalFormContainer").style.display = "block";
       } else {
-        document.getElementById("goalCard").classList.remove("border-success");
+        document.getElementById("goalCard")?.classList.remove("border-success");
 
-        document.getElementById("goalProgress").classList.remove("bg-success");
-        document.getElementById("goalProgress").classList.add("bg-primary");
+        document.getElementById("goalProgress")?.classList.remove("bg-success");
+        document.getElementById("goalProgress")?.classList.add("bg-primary");
 
-        document.getElementById("goalCompletedBox").classList.add("d-none");
+        document.getElementById("goalCompletedBox")?.classList.add("d-none");
       }
     })
     .catch(() => {});
