@@ -49,13 +49,12 @@ document.addEventListener("DOMContentLoaded", () => {
   const requiredInputs = document.querySelectorAll("input[required], select[required], textarea[required]");
 
   requiredInputs.forEach((input) => {
-    // Input ko wrap karne ke liye wrapper banayein
+   
     const wrapper = document.createElement("div");
     wrapper.className = "has-validation-icon w-100";
     input.parentNode.insertBefore(wrapper, input);
     wrapper.appendChild(input);
 
-    // Font Awesome ka Initial Icon banayein
     const icon = document.createElement("i");
     wrapper.appendChild(icon);
 
@@ -66,10 +65,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
       if (hasValue && isValid) {
         icon.className = "fa-solid fa-circle-check text-success";
-        return true; // Value mil gayi aur valid hai
+        return true; 
       } else {
         icon.className = "fa-solid fa-circle-exclamation text-danger";
-        return false; // Abhi bhi khali hai
+        return false; 
       }
     };
 
@@ -78,13 +77,13 @@ document.addEventListener("DOMContentLoaded", () => {
       const isFilled = validateField();
       checkAttempts++;
 
-      // Agar data mil gaya YA 2 second tak data nahi aaya (unfilled new form), toh check karna band karo
+     
       if (isFilled || checkAttempts > 20) {
         clearInterval(storagePoller);
       }
-    }, 100); // Har 100 milliseconds mein check karega
+    }, 100); 
 
-    // Real-time listeners: Jab user khud se type kare ya change kare
+   
     input.addEventListener("input", validateField);
     input.addEventListener("change", validateField);
     input.addEventListener("keyup", validateField);
@@ -350,7 +349,7 @@ function loadDashboardData() {
             alertBadgeEl?.classList.remove("d-none");
           }
 
-          // auto transferd to piggy bank
+         
 
           if (messageTextEl) messageTextEl.innerHTML = `🎉 Great job! You still have <b>${percentageLeft.toFixed(1)}%</b> budget left.`;
         }
@@ -534,7 +533,7 @@ function loadAnalyticsData() {
       }
 
       // -------------------------------------------------------------
-      // 🟢 if expense availabe
+      // 🟢 if expense available
       // -------------------------------------------------------------
       if (contentEl) contentEl?.classList.remove("d-none");
       if (placeholderEl) placeholderEl?.classList.add("d-none");
@@ -626,7 +625,7 @@ function buildFilteredChart(mode) {
     filtered = allRawExpenses.filter((item) => item.payment_mode === mode);
   }
 
-  // Category breakdown calculate in clientside for custom filter support
+  // Category breakdown calculate in client side for custom filter support
   const breakdown = {};
   filtered.forEach((item) => {
     breakdown[item.category] = (breakdown[item.category] || 0) + item.amount;
@@ -813,14 +812,14 @@ if (signupForm) {
 
         if (data && data.detail) {
           if (Array.isArray(data.detail)) {
-            // Pydantic validation error array ke andar check karenge
+          
             const firstError = data.detail[0];
             const fieldName = firstError.loc ? firstError.loc[firstError.loc.length - 1] : "";
 
             if (fieldName === "password") {
               errorMessage = "Password should be at least 6 characters long.";
             } else if (fieldName === "username") {
-              errorMessage = "Username should be at least 3 characters long."; // Agar username par bhi lagaya ho
+              errorMessage = "Username should be at least 3 characters long."; 
             } else {
               errorMessage = firstError.msg || "Validation error occurred.";
             }
@@ -1359,7 +1358,7 @@ function showModalAlert(message, type = "danger") {
     alertEl.innerHTML = message;
     // Bootstrap alert classes
     alertEl.className = `alert alert-${type} py-2 px-3 small mb-3`;
-    alertEl?.classList.remove("d-none"); // Alert ko screen par dikhayein
+    alertEl?.classList.remove("d-none"); // Alert ko screen par show
 
     setTimeout(() => {
       alertEl?.classList.add("d-none");
@@ -1485,7 +1484,7 @@ if (goalForm) {
   });
 }
 
-// Auto Transfer: privious month remaining budget auto add on piggy bank
+// Auto Transfer:prev month remaining budget auto add on piggy bank
 async function triggerAutoTransfer() {
   try {
     const res = await fetch("/savings/auto-transfer", {
@@ -1560,7 +1559,7 @@ function loadGoal() {
     })
     .catch(() => {});
 }
-// open deposite button modal
+// open deposit button modal
 const depositBtn = document.getElementById("depositBtn");
 
 if (depositBtn) {
@@ -1579,7 +1578,7 @@ if (withdrawBtn) {
   });
 }
 
-// deposite confirm
+// deposit confirm
 const confirmDeposit = document.getElementById("confirmDeposit");
 
 if (confirmDeposit) {
@@ -1618,7 +1617,7 @@ if (confirmDeposit) {
   });
 }
 
-// #withdrawl confirm
+// #withdrawn confirm
 const confirmWithdraw = document.getElementById("confirmWithdraw");
 
 if (confirmWithdraw) {
@@ -1780,7 +1779,7 @@ function createNewGoal() {
   });
 }
 
-// save goal transactin history withdrawl and deposite
+// save goal transaction history withdrawn and deposit
 function loadTransactions() {
   const username = localStorage.getItem("tracker_username");
 
