@@ -64,6 +64,7 @@ Bash
 pip install -r requirements.txt
 Create .env File
 Create a .env file in the root directory and configure your credentials:
+```
 MONGO_URI=YOUR_MONGODB_CONNECTION_STRING
 SECRET_KEY=YOUR_SECRET_KEY
 ALGORITHM=HS256
@@ -74,6 +75,7 @@ MAIL_FROM= from username
 MAIL_PORT=587
 MAIL_SERVER=smtp.gmail.com
 MAIL_FROM_NAME=Expense Tracker Team
+```
 
 Run Application
 Bash
