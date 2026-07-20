@@ -41,48 +41,12 @@ app.include_router(savings.router)
 
 
 
-# @app.get("/", response_class=HTMLResponse)
-# def home(request: Request, current_user=Depends(get_current_user_from_cookie)):
-#     if not current_user:
-#         return RedirectResponse(url="/login")
-#     return templates.TemplateResponse(request, "index.html", {"username": current_user["username"]})
-
-# @app.get("/manage", response_class=HTMLResponse)
-# def manage_page(request: Request, current_user=Depends(get_current_user_from_cookie)):
-#     if not current_user:
-#         return RedirectResponse(url="/login")
-#     return templates.TemplateResponse(request, "manage.html", {"username": current_user["username"]})
-
-# @app.get("/analytics", response_class=HTMLResponse)
-# def analytics_page(request: Request, current_user=Depends(get_current_user_from_cookie)):
-#     if not current_user:
-#         return RedirectResponse(url="/login")
-#     return templates.TemplateResponse(request, "analytics.html", {"username": current_user["username"]})
-
-
-# @app.get("/login", response_class=HTMLResponse)
-# def login_page(request: Request):
-#     return templates.TemplateResponse(request, "login.html")
-
-# @app.get("/signup", response_class=HTMLResponse)
-# def signup_page(request: Request):
-#     return templates.TemplateResponse(request, "signup.html")
-
-
-# @app.get("/delete-account", response_class=HTMLResponse)
-# def delete_account_page(request: Request):
-#     return templates.TemplateResponse(request, "delete-account.html")
-
-
-
-
-
 
 @app.get("/", response_class=HTMLResponse)
 def home(request: Request, current_user=Depends(get_current_user_from_cookie)):
     if not current_user:
         return RedirectResponse(url="/login")
-    # Yahan "request" pass karna zaroori hai
+    
     return templates.TemplateResponse(request, "index.html", {"request": request, "username": current_user["username"]})
 
 @app.get("/manage", response_class=HTMLResponse)
@@ -171,26 +135,3 @@ def check_and_generate_recurring_expenses():
             print(f"🚀 Auto-Generated Recurring Expense: {template['category']} - ₹{template['amount']} for Date: {expected_new_date}")
 
 
-
-
-
-# @app.get("/admin", response_class=HTMLResponse)
-# def admin_panel(request: Request, current_user=Depends(get_current_user_from_cookie)):
-#     # Guard Layer: Check if user is logged in and has an Admin role
-#     if not current_user or current_user.get("role") != "admin":
-#         return RedirectResponse(url="/login") # Block unauthorized access
-        
-#     return templates.TemplateResponse(request, "admin.html" )
-
-
-
-
-
-
-
-
-# @app.get("/saving-page", response_class=HTMLResponse)
-# def saving_goal_page(request: Request, current_user=Depends(get_current_user_from_cookie)):
-#     if not current_user:
-#         return RedirectResponse(url="/login")
-#     return templates.TemplateResponse(request, "savings.html", {"username": current_user["username"]})
