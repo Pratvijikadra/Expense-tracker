@@ -46,25 +46,30 @@ User Workflow Demo : https://drive.google.com/file/d/1KD7HI6TGFVZR-yiw9LtprmHb0M
 ## ⚙ Installation
 
 ### Clone Repository
-
+```bash
 git clone https://github.com/Pratvijikadra/Expense-tracker.git
+```
+```bash
 cd expense_tracker
+```
 
 Create Virtual Environment
-Bash
+```bash
 python -m venv venv
+```
 Activate Environment
 
 Windows:
-Bash
+```bash
 venv\Scripts\activate
+```
 
 Install Dependencies
 Bash
 pip install -r requirements.txt
 Create .env File
 Create a .env file in the root directory and configure your credentials:
-```
+bash```
 MONGO_URI=YOUR_MONGODB_CONNECTION_STRING
 SECRET_KEY=YOUR_SECRET_KEY
 ALGORITHM=HS256
@@ -78,9 +83,11 @@ MAIL_FROM_NAME=Expense Tracker Team
 ```
 
 Run Application
-Bash
+bash```
 uvicorn main:app --reload
-Open http://127.0.0.1:8000 in your browser.
+```
+Open 
+bash``` http://127.0.0.1:8000 in your browser. ```
 
 🔐 Authentication
 JWT Access Token Generation
