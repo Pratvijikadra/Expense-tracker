@@ -65,8 +65,8 @@ venv\Scripts\activate
 ```
 
 Install Dependencies
-Bash
-pip install -r requirements.txt
+bash```
+pip install -r requirements.txt ```
 Create .env File
 Create a .env file in the root directory and configure your credentials:
 bash```
@@ -79,8 +79,7 @@ MAIL_PASSWORD= app password
 MAIL_FROM= from username
 MAIL_PORT=587
 MAIL_SERVER=smtp.gmail.com
-MAIL_FROM_NAME=Expense Tracker Team
-```
+MAIL_FROM_NAME=Expense Tracker Team ```
 
 Run Application
 bash```
