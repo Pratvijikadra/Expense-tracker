@@ -79,15 +79,16 @@ MAIL_PASSWORD= app password
 MAIL_FROM= from username
 MAIL_PORT=587
 MAIL_SERVER=smtp.gmail.com
-MAIL_FROM_NAME=Expense Tracker Team ```
+MAIL_FROM_NAME=Expense Tracker Team
+ ```
 
 Run Application
-bash```
+```bash
 uvicorn main:app --reload
 ```
 Open 
 ```bash
-http://127.0.0.1:8000 in your browser.
+http://127.0.0.1:8000
  ```
 
 🔐 Authentication
