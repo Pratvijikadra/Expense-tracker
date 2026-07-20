@@ -65,11 +65,11 @@ venv\Scripts\activate
 ```
 
 Install Dependencies
-bash```
+```bash
 pip install -r requirements.txt ```
 Create .env File
 Create a .env file in the root directory and configure your credentials:
-bash```
+```env
 MONGO_URI=YOUR_MONGODB_CONNECTION_STRING
 SECRET_KEY=YOUR_SECRET_KEY
 ALGORITHM=HS256
@@ -86,7 +86,9 @@ bash```
 uvicorn main:app --reload
 ```
 Open 
-bash``` http://127.0.0.1:8000 in your browser. ```
+```bash
+http://127.0.0.1:8000 in your browser.
+ ```
 
 🔐 Authentication
 JWT Access Token Generation
