@@ -66,7 +66,8 @@ venv\Scripts\activate
 
 Install Dependencies
 ```bash
-pip install -r requirements.txt ```
+pip install -r requirements.txt
+ ```
 Create .env File
 Create a .env file in the root directory and configure your credentials:
 ```env
